@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thanh Toán</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      background-color: #f5f5f5;
+      overflow-x: hidden;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: #2e2e2e;
+      color: white;
+      position: fixed;
+      padding-top: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s;
+      z-index: 1000;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar ul a {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid #444;
+      font-size: 14px;
+      font-weight: 400;
+      transition: background 0.2s;
+    }
+
+    .sidebar ul a:hover {
+      background: #3d3d3d;
+    }
+
+    .menu-icon {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+      transition: margin-left 0.3s;
+    }
+
+    h1, h2 {
+      color: #333;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      background: white;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+    }
+
+    input, select {
+      padding: 8px;
+      margin-right: 8px;
+      margin-bottom: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    input[type="text"] {
+      width: 200px;
+    }
+
+    .button {
+      background: linear-gradient(to bottom, #2ecc71, #27ae60);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 12px;
+      transition: background 0.3s;
+    }
+
+    .button:hover {
+      background: linear-gradient(to bottom, #27ae60, #219653);
+    }
+
+    .btn-preview {
+      background: linear-gradient(to bottom, #3498db, #2980b9);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 12px;
+      transition: background 0.3s;
+    }
+
+    .btn-preview:hover {
+      background: linear-gradient(to bottom, #2980b9, #1f6f93);
+    }
+
+    .table-container {
+      background: white;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    th {
+      background: #f8f8f8;
+      color: #333;
+      font-weight: 600;
+    }
+
+    td.text-ellipsis {
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .error-message, .success-message {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 14px;
+      animation: fadeIn 0.3s;
+      display: none;
+    }
+
+    .error-message {
+      background: #ffe6e6;
+      color: #e74c3c;
+    }
+
+    .success-message {
+      background: #e6ffed;
+      color: #2ecc71;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #666;
+      padding: 15px;
+      font-size: 14px;
+    }
+
+    .logout {
+      border-top: 1px solid #444;
+      margin-top: auto;
+    }
+
+    .preview-container {
+      margin-top: 10px;
+      padding: 10px;
+      background: #f8f8f8;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .preview-container.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-250px);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .table-container {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 900px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <ul>
+      <li><a href="trangchu.html"><i class="fas fa-home menu-icon"></i>Trang Chủ</a></li>
+      <li><a href="quanlytaikhoan.html"><i class="fas fa-user-shield menu-icon"></i>Quản Lý Tài Khoản</a></li>
+      <li><a href="datphong.html"><i class="fas fa-bed menu-icon"></i>Đặt Phòng</a></li>
+      <li><a href="datphongonline.html"><i class="fas fa-globe menu-icon"></i>Đặt Phòng Online</a></li>
+      <li><a href="timkiemthongtin.html"><i class="fas fa-search menu-icon"></i>Tìm Kiếm Thông Tin</a></li>
+      <li><a href="nhanphong.html"><i class="fas fa-door-open menu-icon"></i>Nhận Phòng</a></li>
+      <li><a href="traphong.html"><i class="fas fa-door-closed menu-icon"></i>Trả Phòng</a></li>
+      <li><a href="dichvu.html"><i class="fas fa-concierge-bell menu-icon"></i>Dịch Vụ</a></li>
+      <li><a href="khachhang.html"><i class="fas fa-users menu-icon"></i>Khách Hàng</a></li>
+      <li><a href="xemdatphong.html"><i class="fas fa-calendar-check menu-icon"></i>Xem Đặt Phòng</a></li>
+      <li><a href="huydatphong.html"><i class="fas fa-calendar-times menu-icon"></i>Hủy Đặt Phòng</a></li>
+      <li><a href="thanhtoan.html"><i class="fas fa-money-bill menu-icon"></i>Thanh Toán</a>
+      <li><a href="giaphong.html"><i class="fas fa-money-bill menu-icon"></i>Giá Phòng</a></li>
+      <li><a href="doanhthu.html"><i class="fas fa-chart-line menu-icon"></i>Doanh Thu</a></li>
+      <li><a href="baocao.html"><i class="fas fa-file-alt menu-icon"></i>Báo Cáo</a></li>
+    </ul>
+    <ul class="logout">
+      <li><a href="dangnhap.html"><i class="fas fa-sign-out-alt menu-icon"></i>Đăng Xuất</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <h1>Thanh Toán</h1>
+    <div id="errorMessage" class="error-message"></div>
+    <div id="successMessage" class="success-message"></div>
+
+    <div class="form-group">
+      <h2>Thanh Toán Tiền Phòng & Dịch Vụ</h2>
+      <input type="text" id="maKhachHang" placeholder="Mã Khách Hàng (CCCD)" required>
+      <button class="btn-preview" id="previewBillBtn">Xem Trước Hóa Đơn</button>
+      <button class="button" id="confirmPaymentBtn">Xác Nhận Thanh Toán</button>
+      <div id="previewContainer" class="preview-container">
+        <h3>Xem trước hóa đơn</h3>
+        <p><strong>Tên Khách:</strong> <span id="previewTenKhach"></span></p>
+        <p><strong>Mã Khách Hàng (CCCD):</strong> <span id="previewCCCD"></span></p>
+        <p><strong>Số Phòng:</strong> <span id="previewSoPhong"></span></p>
+        <p><strong>Loại Phòng:</strong> <span id="previewLoaiPhong"></span></p>
+        <p><strong>Ngày Đến:</strong> <span id="previewNgayDen"></span></p>
+        <p><strong>Ngày Đi:</strong> <span id="previewNgayDi"></span></p>
+        <p><strong>Số Ngày Ở:</strong> <span id="previewSoNgay"></span></p>
+        <p><strong>Giá Phòng/Ngày (VND):</strong> <span id="previewGiaPhong"></span></p>
+        <p><strong>Tổng Tiền Phòng (VND):</strong> <span id="previewTongTienPhong"></span></p>
+        <p><strong>Dịch Vụ:</strong></p>
+        <ul id="previewDichVuList"></ul>
+        <p><strong>Tổng Tiền Dịch Vụ (VND):</strong> <span id="previewTongTienDichVu"></span></p>
+        <p><strong>Tổng Hóa Đơn (VND):</strong> <span id="previewTongHoaDon"></span></p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <h2>Lịch Sử Thanh Toán</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tên Khách</th>
+            <th>CCCD</th>
+            <th>Số Phòng</th>
+            <th>Loại Phòng</th>
+            <th>Tổng Tiền Phòng (VND)</th>
+            <th>Tổng Tiền Dịch Vụ (VND)</th>
+            <th>Ngày Thanh Toán</th>
+          </tr>
+        </thead>
+        <tbody id="paymentHistory"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // Module quản lý dữ liệu
+      const DataManager = {
+        getBookings: () => JSON.parse(localStorage.getItem("datPhong")) || [],
+        getRoomPrices: () => JSON.parse(localStorage.getItem("giaPhong")) || [],
+        getServices: () => JSON.parse(localStorage.getItem("dichVu")) || [],
+        getAssignedServices: () => JSON.parse(localStorage.getItem("dichVuGan")) || [],
+        getPaymentHistory: () => JSON.parse(localStorage.getItem("lichSuThanhToan")) || [],
+        saveBookings: (bookings) => localStorage.setItem("datPhong", JSON.stringify(bookings)),
+        saveAssignedServices: (assignedServices) => localStorage.setItem("dichVuGan", JSON.stringify(assignedServices)),
+        savePaymentHistory: (history) => localStorage.setItem("lichSuThanhToan", JSON.stringify(history)),
+        generateUUID: () => {
+          return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          });
+        },
+      };
+
+      // Module hiển thị thông báo
+      const Notification = {
+        show: (message, isSuccess = false) => {
+          const messageElement = document.getElementById(isSuccess ? "successMessage" : "errorMessage");
+          messageElement.textContent = message;
+          messageElement.style.display = "block";
+          setTimeout(() => (messageElement.style.display = "none"), 3000);
+        },
+      };
+
+      // Module kiểm tra dữ liệu
+      const Validator = {
+        validateMaKhachHang: (maKhachHang) => {
+          if (!maKhachHang.trim()) return "Mã khách hàng không được để trống!";
+          if (!/^\d{12}$/.test(maKhachHang)) return "Mã khách hàng phải là 12 chữ số!";
+          return null;
+        },
+      };
+
+      // Module tính toán
+      const Calculator = {
+        calculateDays: (ngayDen, ngayDi) => {
+          const dateDen = new Date(ngayDen);
+          const dateDi = new Date(ngayDi);
+          const diffTime = Math.abs(dateDi - dateDen);
+          return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        },
+        calculateRoomCost: (giaPhong, soNgay) => giaPhong * soNgay,
+        calculateServiceCost: (assignedServices, services) => {
+          return assignedServices.reduce((total, item) => {
+            const dichVu = services[item.dichVuIndex];
+            return total + (dichVu ? dichVu.price : 0);
+          }, 0);
+        },
+      };
+
+      // Module hiển thị dữ liệu
+      const DisplayManager = {
+        renderPreview: (maKhachHang) => {
+          const previewContainer = document.getElementById("previewContainer");
+          const bookings = DataManager.getBookings();
+          const roomPrices = DataManager.getRoomPrices();
+          const services = DataManager.getServices();
+          const assignedServices = DataManager.getAssignedServices();
+          const booking = bookings.find(p => p.cccd === maKhachHang && p.trangThai === "Đã nhận");
+
+          if (!booking) {
+            previewContainer.classList.remove("active");
+            Notification.show("Không tìm thấy đặt phòng ở trạng thái Đã nhận với CCCD này!");
+            return;
+          }
+
+          const giaPhongObj = roomPrices.find(p => p.loaiPhong === booking.loaiPhong);
+          if (!giaPhongObj) {
+            previewContainer.classList.remove("active");
+            Notification.show("Không tìm thấy giá phòng cho loại phòng này!");
+            return;
+          }
+
+          const soNgay = Calculator.calculateDays(booking.ngayDen, booking.ngayDi);
+          const tongTienPhong = Calculator.calculateRoomCost(giaPhongObj.giaPhong, soNgay);
+          const assignedForCustomer = assignedServices.filter(s => s.cccd === maKhachHang);
+          const tongTienDichVu = Calculator.calculateServiceCost(assignedForCustomer, services);
+
+          document.getElementById("previewTenKhach").textContent = booking.tenKhach;
+          document.getElementById("previewCCCD").textContent = maKhachHang;
+          document.getElementById("previewSoPhong").textContent = booking.soPhong;
+          document.getElementById("previewLoaiPhong").textContent = booking.loaiPhong;
+          document.getElementById("previewNgayDen").textContent = booking.ngayDen;
+          document.getElementById("previewNgayDi").textContent = booking.ngayDi;
+          document.getElementById("previewSoNgay").textContent = soNgay;
+          document.getElementById("previewGiaPhong").textContent = giaPhongObj.giaPhong.toLocaleString();
+          document.getElementById("previewTongTienPhong").textContent = tongTienPhong.toLocaleString();
+
+          const dichVuList = document.getElementById("previewDichVuList");
+          dichVuList.innerHTML = assignedForCustomer.length
+            ? assignedForCustomer.map(item => {
+                const dichVu = services[item.dichVuIndex];
+                return dichVu ? `<li>${dichVu.name}: ${dichVu.price.toLocaleString()} VND</li>` : "";
+              }).filter(item => item).join("")
+            : "<li>Không có dịch vụ nào được gán.</li>";
+
+          document.getElementById("previewTongTienDichVu").textContent = tongTienDichVu.toLocaleString();
+          document.getElementById("previewTongHoaDon").textContent = (tongTienPhong + tongTienDichVu).toLocaleString();
+          previewContainer.classList.add("active");
+        },
+
+        renderPaymentHistory: () => {
+          const tbody = document.getElementById("paymentHistory");
+          const history = DataManager.getPaymentHistory();
+          tbody.innerHTML = history.length
+            ? history.map((item, index) => `
+                <tr>
+                  <td>${index + 1}</td>
+                  <td class="text-ellipsis">${item.tenKhach}</td>
+                  <td>${item.cccd}</td>
+                  <td>${item.soPhong}</td>
+                  <td>${item.loaiPhong}</td>
+                  <td>${item.tongTienPhong.toLocaleString()}</td>
+                  <td>${item.tongTienDichVu.toLocaleString()}</td>
+                  <td>${item.ngayThanhToan}</td>
+                </tr>
+              `).join("")
+            : `<tr><td colspan="8" class="no-data">Không có lịch sử thanh toán.</td></tr>`;
+        },
+      };
+
+      // Module xử lý sự kiện
+      const EventHandler = {
+        previewBill: () => {
+          const maKhachHang = document.getElementById("maKhachHang").value.trim();
+          const maKhachHangError = Validator.validateMaKhachHang(maKhachHang);
+          if (maKhachHangError) return Notification.show(maKhachHangError);
+
+          DisplayManager.renderPreview(maKhachHang);
+        },
+
+        confirmPayment: () => {
+          const maKhachHang = document.getElementById("maKhachHang").value.trim();
+          const maKhachHangError = Validator.validateMaKhachHang(maKhachHang);
+          if (maKhachHangError) return Notification.show(maKhachHangError);
+
+          const bookings = DataManager.getBookings();
+          const roomPrices = DataManager.getRoomPrices();
+          const services = DataManager.getServices();
+          const assignedServices = DataManager.getAssignedServices();
+          const booking = bookings.find(p => p.cccd === maKhachHang && p.trangThai === "Đã nhận");
+
+          if (!booking) return Notification.show("Không tìm thấy đặt phòng ở trạng thái Đã nhận với CCCD này!");
+
+          const giaPhongObj = roomPrices.find(p => p.loaiPhong === booking.loaiPhong);
+          if (!giaPhongObj) return Notification.show("Không tìm thấy giá phòng cho loại phòng này!");
+
+          if (!confirm(`Xác nhận thanh toán cho khách ${booking.tenKhach} (CCCD: ${maKhachHang})?`)) return;
+
+          const soNgay = Calculator.calculateDays(booking.ngayDen, booking.ngayDi);
+          const tongTienPhong = Calculator.calculateRoomCost(giaPhongObj.giaPhong, soNgay);
+          const assignedForCustomer = assignedServices.filter(s => s.cccd === maKhachHang);
+          const tongTienDichVu = Calculator.calculateServiceCost(assignedForCustomer, services);
+          const ngayThanhToan = new Date().toISOString().split("T")[0];
+
+          // Lưu lịch sử thanh toán
+          const paymentHistory = DataManager.getPaymentHistory();
+          const chiTietDichVu = assignedForCustomer.map(item => {
+            const dichVu = services[item.dichVuIndex];
+            return { tenDichVu: dichVu.name, gia: dichVu.price };
+          });
+          paymentHistory.push({
+            id: DataManager.generateUUID(),
+            cccd: maKhachHang,
+            tenKhach: booking.tenKhach,
+            soPhong: booking.soPhong,
+            loaiPhong: booking.loaiPhong,
+            tongTienPhong,
+            tongTienDichVu,
+            ngayThanhToan,
+            chiTietDichVu,
+          });
+          DataManager.savePaymentHistory(paymentHistory);
+
+          // Cập nhật trạng thái đặt phòng
+          booking.trangThai = "Đã trả";
+          booking.ngayTraPhong = ngayThanhToan;
+          DataManager.saveBookings(bookings);
+
+          // Xóa dịch vụ đã gán
+          const updatedAssignedServices = assignedServices.filter(s => s.cccd !== maKhachHang);
+          DataManager.saveAssignedServices(updatedAssignedServices);
+
+          Notification.show(`Thanh toán thành công cho ${booking.tenKhach}!`, true);
+          DisplayManager.renderPaymentHistory();
+          document.getElementById("maKhachHang").value = "";
+          document.getElementById("previewContainer").classList.remove("active");
+        },
+      };
+
+      // Gán sự kiện
+      document.addEventListener("DOMContentLoaded", () => {
+        DisplayManager.renderPaymentHistory();
+
+        document.getElementById("previewBillBtn").addEventListener("click", EventHandler.previewBill);
+        document.getElementById("confirmPaymentBtn").addEventListener("click", EventHandler.confirmPayment);
+      });
+    })();
+  </script>
+</body>
+</html>
