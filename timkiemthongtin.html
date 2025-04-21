@@ -29,13 +29,17 @@
       z-index: 1000;
     }
 
+    .sidebar.hidden {
+      transform: translateX(-250px);
+    }
+
     .sidebar ul {
       list-style: none;
       padding: 0;
       margin: 0;
     }
 
-    .sidebar ul a {
+    .sidebar ul li a {
       display: flex;
       align-items: center;
       padding: 12px 20px;
@@ -47,7 +51,7 @@
       transition: background 0.2s;
     }
 
-    .sidebar ul a:hover {
+    .sidebar ul li a:hover {
       background: #3d3d3d;
     }
 
@@ -62,6 +66,38 @@
       margin-left: 250px;
       padding: 20px;
       transition: margin-left 0.3s;
+    }
+
+    .main-content.full {
+      margin-left: 0;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: #333;
+      cursor: pointer;
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 1100;
+    }
+
+    .backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .backdrop.active {
+      display: block;
     }
 
     h1, h2 {
@@ -181,6 +217,22 @@
     }
 
     @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-250px);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
       .table-container {
         overflow-x: auto;
       }
@@ -192,30 +244,32 @@
   </style>
 </head>
 <body>
-  <div class="sidebar">
+  <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+  <div class="backdrop" id="backdrop" onclick="toggleSidebar()"></div>
+  <div class="sidebar" id="sidebar">
     <ul>
-      <a href="trangchu.html"><i class="fas fa-home menu-icon"></i>Trang Chủ</a>
-      <a href="quanlytaikhoan.html"><i class="fas fa-user-shield menu-icon"></i>Quản Lý Tài Khoản</a>
-      <a href="datphong.html"><i class="fas fa-bed menu-icon"></i>Đặt Phòng</a>
-      <a href="datphongonline.html"><i class="fas fa-globe menu-icon"></i>Đặt Phòng Online</a>
-      <a href="timkiemthongtin.html"><i class="fas fa-search menu-icon"></i>Tìm Kiếm Thông Tin</a>
-      <a href="nhanphong.html"><i class="fas fa-door-open menu-icon"></i>Nhận Phòng</a>
-      <a href="traphong.html"><i class="fas fa-door-closed menu-icon"></i>Trả Phòng</a>
-      <a href="dichvu.html"><i class="fas fa-concierge-bell menu-icon"></i>Dịch Vụ</a>
-      <a href="khachhang.html"><i class="fas fa-users menu-icon"></i>Khách Hàng</a>
-      <a href="xemdatphong.html"><i class="fas fa-calendar-check menu-icon"></i>Xem Đặt Phòng</a>
-      <a href="huydatphong.html"><i class="fas fa-calendar-times menu-icon"></i>Hủy Đặt Phòng</a>
-      <a href="thanhtoan.html"><i class="fas fa-money-bill menu-icon"></i>Thanh Toán</a>
-      <a href="giaphong.html"><i class="fas fa-money-bill menu-icon"></i>Giá Phòng</a>
-      <a href="doanhthu.html"><i class="fas fa-chart-line menu-icon"></i>Doanh Thu</a>
-      <a href="baocao.html"><i class="fas fa-file-alt menu-icon"></i>Báo Cáo</a>
+      <li><a href="trangchu.html"><i class="fas fa-home menu-icon"></i>Trang Chủ</a></li>
+      <li><a href="quanlytaikhoan.html"><i class="fas fa-user-shield menu-icon"></i>Quản Lý Tài Khoản</a></li>
+      <li><a href="datphong.html"><i class="fas fa-bed menu-icon"></i>Đặt Phòng</a></li>
+      <li><a href="datphongonline.html"><i class="fas fa-globe menu-icon"></i>Đặt Phòng Online</a></li>
+      <li><a href="timkiemthongtin.html"><i class="fas fa-search menu-icon"></i>Tìm Kiếm Thông Tin</a></li>
+      <li><a href="nhanphong.html"><i class="fas fa-door-open menu-icon"></i>Nhận Phòng</a></li>
+      <li><a href="traphong.html"><i class="fas fa-door-closed menu-icon"></i>Trả Phòng</a></li>
+      <li><a href="dichvu.html"><i class="fas fa-concierge-bell menu-icon"></i>Dịch Vụ</a></li>
+      <li><a href="khachhang.html"><i class="fas fa-users menu-icon"></i>Khách Hàng</a></li>
+      <li><a href="xemdatphong.html"><i class="fas fa-calendar-check menu-icon"></i>Xem Đặt Phòng</a></li>
+      <li><a href="huydatphong.html"><i class="fas fa-calendar-times menu-icon"></i>Hủy Đặt Phòng</a></li>
+      <li><a href="thanhtoan.html"><i class="fas fa-money-bill menu-icon"></i>Thanh Toán</a></li>
+      <li><a href="giaphong.html"><i class="fas fa-money-bill menu-icon"></i>Giá Phòng</a></li>
+      <li><a href="doanhthu.html"><i class="fas fa-chart-line menu-icon"></i>Doanh Thu</a></li>
+      <li><a href="baocao.html"><i class="fas fa-file-alt menu-icon"></i>Báo Cáo</a></li>
     </ul>
     <ul class="logout">
-      <a href="dangnhap.html"><i class="fas fa-sign-out-alt menu-icon"></i>Đăng Xuất</a>
+      <li><a href="dangnhap.html" onclick="logout()"><i class="fas fa-sign-out-alt menu-icon"></i>Đăng Xuất</a></li>
     </ul>
   </div>
 
-  <div class="main-content">
+  <div class="main-content" id="mainContent">
     <h1>Tìm Kiếm Thông Tin</h1>
     <div id="errorMessage" class="error-message"></div>
     <div id="successMessage" class="success-message"></div>
@@ -223,7 +277,6 @@
     <form id="formTimKiem">
       <label for="loai">Loại Tìm Kiếm</label>
       <select id="loai">
-        <option value="phong">Thông tin phòng</option>
         <option value="khachhang">Thông tin khách hàng</option>
         <option value="datphong">Tìm kiếm đặt phòng</option>
       </select>
@@ -244,177 +297,176 @@
   </div>
 
   <script>
-    const form = document.getElementById("formTimKiem");
-    const ketqua = document.getElementById("ketqua");
-    const tableHeader = document.getElementById("tableHeader");
-
-    let danhSachPhong = JSON.parse(localStorage.getItem("datPhong")) || [];
-
-    // Migrate old datPhong data
-    if (danhSachPhong.some(p => !p.soDienThoai || !p.email || !p.soPhong || !p.cccd)) {
-      danhSachPhong = danhSachPhong.map(p => ({
-        tenKhach: p.tenKhach || p.name || "Chưa cung cấp",
-        cccd: p.cccd || "Chưa cung cấp",
-        soDienThoai: p.soDienThoai || p.phone || "Chưa cung cấp",
-        email: p.email || "Chưa cung cấp",
-        loaiPhong: p.loaiPhong || "Chưa cung cấp",
-        soPhong: p.soPhong || "Chưa cung cấp",
-        ngayDen: p.ngayDen || "Chưa xác định",
-        ngayDi: p.ngayDi || "Chưa xác định",
-        trangThai: p.trangThai || "Đang chờ",
-        ngayTraPhong: p.ngayTraPhong
-      }));
-      localStorage.setItem("datPhong", JSON.stringify(danhSachPhong));
-      console.log(`[${new Date().toISOString()}] Đã chuyển đổi dữ liệu datPhong:`, danhSachPhong);
-    }
-
-    // Hàm hiển thị thông báo
-    function showMessage(message, isSuccess = false) {
-      const messageElement = isSuccess ? document.getElementById("successMessage") : document.getElementById("errorMessage");
-      messageElement.textContent = message;
-      messageElement.style.display = "block";
-      setTimeout(() => {
-        messageElement.style.display = "none";
-      }, 3000);
-    }
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const loai = document.getElementById("loai").value;
-      const tukhoa = document.getElementById("tukhoa").value.trim().toLowerCase();
-
-      // Validate từ khóa
-      if (!tukhoa) {
-        showMessage("Vui lòng nhập từ khóa tìm kiếm!");
-        ketqua.innerHTML = `<tr><td colspan="${loai === 'phong' ? 2 : loai === 'khachhang' ? 4 : 9}" class="no-data">Không có dữ liệu do thiếu từ khóa.</td></tr>`;
-        console.log(`[${new Date().toISOString()}] Tìm kiếm thất bại: Thiếu từ khóa`);
-        return;
-      }
-
-      let ketQuaTimKiem = [];
-      let validItems = 0;
-      let invalidItems = 0;
-
-      if (loai === "phong") {
-        const danhSachGiaPhong = JSON.parse(localStorage.getItem("giaPhong")) || [];
-        ketQuaTimKiem = danhSachGiaPhong.filter(gia => {
-          if (!gia.loaiPhong || !gia.giaPhong) {
-            console.warn(`[${new Date().toISOString()}] Dữ liệu giá phòng không hợp lệ:`, gia);
-            invalidItems++;
-            return false;
-          }
-          validItems++;
-          return gia.loaiPhong.toLowerCase().includes(tukhoa) || 
-                 gia.giaPhong.toString().includes(tukhoa);
-        });
-        tableHeader.innerHTML = `
-          <tr>
-            <th>Loại Phòng</th>
-            <th>Giá Phòng (VND)</th>
-          </tr>
-        `;
-      } else if (loai === "khachhang") {
-        const danhSachKhachHang = JSON.parse(localStorage.getItem("khachHang")) || [];
-        ketQuaTimKiem = danhSachKhachHang.filter(kh => {
-          if (!kh.name || !kh.idCard) {
-            console.warn(`[${new Date().toISOString()}] Dữ liệu khách hàng không hợp lệ:`, kh);
-            invalidItems++;
-            return false;
-          }
-          validItems++;
-          return kh.name.toLowerCase().includes(tukhoa) || 
-                 kh.idCard.toLowerCase().includes(tukhoa) || 
-                 (kh.phone && kh.phone.toLowerCase().includes(tukhoa)) || 
-                 (kh.email && kh.email.toLowerCase().includes(tukhoa));
-        });
-        tableHeader.innerHTML = `
-          <tr>
-            <th>Tên Khách Hàng</th>
-            <th>CMND/CCCD</th>
-            <th>Số Điện Thoại</th>
-            <th>Email</th>
-          </tr>
-        `;
-      } else if (loai === "datphong") {
-        ketQuaTimKiem = danhSachPhong.filter(phong => {
-          if (!phong.tenKhach || !phong.cccd || !phong.loaiPhong || !phong.soPhong || !phong.trangThai) {
-            console.warn(`[${new Date().toISOString()}] Dữ liệu đặt phòng không hợp lệ:`, phong);
-            invalidItems++;
-            return false;
-          }
-          validItems++;
-          return phong.tenKhach.toLowerCase().includes(tukhoa) || 
-                 phong.cccd.toLowerCase().includes(tukhoa) || 
-                 phong.soDienThoai.toLowerCase().includes(tukhoa) || 
-                 (phong.email && phong.email.toLowerCase().includes(tukhoa)) || 
-                 phong.loaiPhong.toLowerCase().includes(tukhoa) || 
-                 phong.soPhong.toLowerCase().includes(tukhoa) || 
-                 phong.trangThai.toLowerCase().includes(tukhoa) || 
-                 (phong.ngayDen && phong.ngayDen.includes(tukhoa)) || 
-                 (phong.ngayDi && phong.ngayDi.includes(tukhoa)) || 
-                 (phong.ngayTraPhong && phong.ngayTraPhong.includes(tukhoa));
-        });
-        tableHeader.innerHTML = `
-          <tr>
-            <th>Tên Khách</th>
-            <th>CCCD</th>
-            <th>Số Điện Thoại</th>
-            <th>Email</th>
-            <th>Số Phòng</th>
-            <th>Loại Phòng</th>
-            <th>Ngày Đến</th>
-            <th>Ngày Đi</th>
-            <th>Trạng Thái</th>
-          </tr>
-        `;
-      }
-
-      hienThiKetQua(loai, ketQuaTimKiem);
-      console.log(`[${new Date().toISOString()}] Tìm kiếm ${loai}:`, { validItems, invalidItems, ketQuaTimKiem });
-      if (ketQuaTimKiem.length > 0) {
-        showMessage(`Tìm thấy ${ketQuaTimKiem.length} kết quả!`, true);
-      } else {
-        showMessage("Không tìm thấy kết quả phù hợp.");
-      }
-    });
-
-    function hienThiKetQua(loai, list) {
-      ketqua.innerHTML = "";
-      if (list.length === 0) {
-        ketqua.innerHTML = `<tr><td colspan="${loai === 'phong' ? 2 : loai === 'khachhang' ? 4 : 9}" class="no-data">Không tìm thấy kết quả. Vui lòng kiểm tra từ khóa hoặc dữ liệu ở trang ${loai === 'phong' ? 'Giá Phòng' : loai === 'khachhang' ? 'Khách Hàng' : 'Đặt Phòng'}.</td></tr>`;
-        return;
-      }
-
-      list.forEach(item => {
-        const row = document.createElement("tr");
-        if (loai === "phong") {
-          row.innerHTML = `
-            <td>${item.loaiPhong}</td>
-            <td>${item.giaPhong.toLocaleString()} VND</td>
-          `;
-        } else if (loai === "khachhang") {
-          row.innerHTML = `
-            <td class="text-ellipsis">${item.name}</td>
-            <td>${item.idCard}</td>
-            <td>${item.phone || "Chưa cung cấp"}</td>
-            <td class="text-ellipsis">${item.email || "Chưa cung cấp"}</td>
-          `;
-        } else if (loai === "datphong") {
-          row.innerHTML = `
-            <td class="text-ellipsis">${item.tenKhach}</td>
-            <td>${item.cccd}</td>
-            <td>${item.soDienThoai}</td>
-            <td class="text-ellipsis">${item.email}</td>
-            <td>${item.soPhong}</td>
-            <td>${item.loaiPhong}</td>
-            <td>${item.ngayDen || "Chưa xác định"}</td>
-            <td>${item.ngayDi || "Chưa xác định"}</td>
-            <td>${item.trangThai}</td>
-          `;
+    (function () {
+      // Module quản lý dữ liệu
+      const DataManager = {
+        clearLoginState: () => localStorage.removeItem("dangNhap"),
+        // Lấy dữ liệu khách hàng từ localStorage
+        fetchGuests: async (keyword) => {
+          const danhSachKhachHang = JSON.parse(localStorage.getItem("khachHang")) || [];
+          console.log(`[${new Date().toISOString()}] Tìm kiếm khách hàng với từ khóa: "${keyword}"`);
+          const results = danhSachKhachHang.filter(kh => {
+            return (
+              (kh.maKhachHang && kh.maKhachHang.toLowerCase().includes(keyword)) ||
+              (kh.tenKhach && kh.tenKhach.toLowerCase().includes(keyword)) ||
+              (kh.soDienThoai && kh.soDienThoai.includes(keyword)) ||
+              (kh.email && kh.email.toLowerCase().includes(keyword)) ||
+              (kh.cccd && kh.cccd.includes(keyword))
+            );
+          });
+          console.log(`[${new Date().toISOString()}] Kết quả tìm khách hàng:`, results);
+          return results;
+        },
+        // Lấy dữ liệu đặt phòng từ localStorage
+        fetchBookings: async (keyword) => {
+          const danhSachPhong = JSON.parse(localStorage.getItem("datPhong")) || [];
+          console.log(`[${new Date().toISOString()}] Tìm kiếm đặt phòng với từ khóa: "${keyword}"`);
+          const results = danhSachPhong.filter(b => {
+            return (
+              (b.tenKhach && b.tenKhach.toLowerCase().includes(keyword)) ||
+              (b.soDienThoai && b.soDienThoai.includes(keyword)) ||
+              (b.email && b.email.toLowerCase().includes(keyword)) ||
+              (b.soPhong && b.soPhong.toLowerCase().includes(keyword)) ||
+              (b.loaiPhong && b.loaiPhong.toLowerCase().includes(keyword)) ||
+              (b.ngayDen && b.ngayDen.includes(keyword)) ||
+              (b.ngayDi && b.ngayDi.includes(keyword)) ||
+              (b.trangThai && b.trangThai.toLowerCase().includes(keyword))
+            );
+          });
+          console.log(`[${new Date().toISOString()}] Kết quả tìm đặt phòng:`, results);
+          return results;
         }
-        ketqua.appendChild(row);
+      };
+
+      // Module hiển thị thông báo
+      const Notification = {
+        show: (message, isSuccess = false) => {
+          const messageElement = document.getElementById(isSuccess ? "successMessage" : "errorMessage");
+          messageElement.textContent = message;
+          messageElement.style.display = "block";
+          setTimeout(() => (messageElement.style.display = "none"), 3000);
+        }
+      };
+
+      // Module xử lý tìm kiếm
+      const SearchHandler = {
+        search: async (event) => {
+          event.preventDefault();
+          const loai = document.getElementById("loai").value;
+          const tukhoa = document.getElementById("tukhoa").value.trim().toLowerCase();
+
+          if (!tukhoa) {
+            Notification.show("Vui lòng nhập từ khóa tìm kiếm!");
+            document.getElementById("ketqua").innerHTML = `<tr><td colspan="${loai === 'khachhang' ? 5 : 8}" class="no-data">Không có dữ liệu do thiếu từ khóa.</td></tr>`;
+            console.log(`[${new Date().toISOString()}] Tìm kiếm thất bại: Thiếu từ khóa`);
+            return;
+          }
+
+          let ketQuaTimKiem = [];
+          const tableHeader = document.getElementById("tableHeader");
+          const ketqua = document.getElementById("ketqua");
+
+          try {
+            if (loai === "khachhang") {
+              ketQuaTimKiem = await DataManager.fetchGuests(tukhoa);
+              tableHeader.innerHTML = `
+                <tr>
+                  <th>Mã Khách Hàng</th>
+                  <th>Tên Khách Hàng</th>
+                  <th>Số Điện Thoại</th>
+                  <th>Email</th>
+                  <th>CMND/CCCD</th>
+                </tr>
+              `;
+            } else if (loai === "datphong") {
+              ketQuaTimKiem = await DataManager.fetchBookings(tukhoa);
+              tableHeader.innerHTML = `
+                <tr>
+                  <th>Tên Khách</th>
+                  <th>Số Điện Thoại</th>
+                  <th>Email</th>
+                  <th>Số Phòng</th>
+                  <th>Loại Phòng</th>
+                  <th>Ngày Đến</th>
+                  <th>Ngày Đi</th>
+                  <th>Trạng Thái</th>
+                </tr>
+              `;
+            }
+
+            SearchHandler.displayResults(loai, ketQuaTimKiem);
+            if (ketQuaTimKiem.length > 0) {
+              Notification.show(`Tìm thấy ${ketQuaTimKiem.length} kết quả!`, true);
+            } else {
+              const message = loai === "khachhang" 
+                ? `Không tìm thấy khách hàng với từ khóa "${tukhoa}". Vui lòng thử lại hoặc thêm khách hàng mới ở trang Quản Lý Khách Hàng.`
+                : `Không tìm thấy đặt phòng với từ khóa "${tukhoa}". Vui lòng thử lại hoặc thêm đặt phòng mới ở trang Đặt Phòng.`;
+              Notification.show(message);
+            }
+          } catch (error) {
+            Notification.show("Lỗi hệ thống khi tìm kiếm. Vui lòng thử lại!");
+            console.error(`[${new Date().toISOString()}] Lỗi tìm kiếm ${loai}:`, error);
+          }
+        },
+        displayResults: (loai, list) => {
+          const ketqua = document.getElementById("ketqua");
+          ketqua.innerHTML = "";
+          if (list.length === 0) {
+            const message = loai === "khachhang" 
+              ? "Không tìm thấy khách hàng. Vui lòng kiểm tra từ khóa hoặc thêm khách hàng mới ở trang Quản Lý Khách Hàng."
+              : "Không tìm thấy thông tin đặt phòng. Vui lòng kiểm tra từ khóa hoặc thêm đặt phòng mới ở trang Đặt Phòng.";
+            ketqua.innerHTML = `<tr><td colspan="${loai === 'khachhang' ? 5 : 8}" class="no-data">${message}</td></tr>`;
+            return;
+          }
+
+          list.forEach(item => {
+            const row = document.createElement("tr");
+            if (loai === "khachhang") {
+              row.innerHTML = `
+                <td>${item.maKhachHang || "Chưa cung cấp"}</td>
+                <td class="text-ellipsis">${item.tenKhach || "Chưa cung cấp"}</td>
+                <td>${item.soDienThoai || "Chưa cung cấp"}</td>
+                <td class="text-ellipsis">${item.email || "Chưa cung cấp"}</td>
+                <td>${item.cccd || "Chưa cung cấp"}</td>
+              `;
+            } else if (loai === "datphong") {
+              row.innerHTML = `
+                <td class="text-ellipsis">${item.tenKhach || "Chưa cung cấp"}</td>
+                <td>${item.soDienThoai || "Chưa cung cấp"}</td>
+                <td class="text-ellipsis">${item.email || "Chưa cung cấp"}</td>
+                <td>${item.soPhong || "Chưa xác định"}</td>
+                <td>${item.loaiPhong || "Chưa xác định"}</td>
+                <td>${item.ngayDen || "Chưa xác định"}</td>
+                <td>${item.ngayDi || "Chưa xác định"}</td>
+                <td>${item.trangThai || "Chưa xác định"}</td>
+              `;
+            }
+            ketqua.appendChild(row);
+          });
+        }
+      };
+
+      // Hàm toggle sidebar
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const mainContent = document.getElementById("mainContent");
+        const backdrop = document.getElementById("backdrop");
+        sidebar.classList.toggle("active");
+        mainContent.classList.toggle("full");
+        backdrop.classList.toggle("active");
+      }
+
+      // Hàm đăng xuất
+      window.logout = () => {
+        DataManager.clearLoginState();
+        Notification.show("Đã đăng xuất!");
+      };
+
+      // Gán sự kiện
+      document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("formTimKiem").addEventListener("submit", SearchHandler.search);
       });
-    }
+    })();
   </script>
 </body>
 </html>
